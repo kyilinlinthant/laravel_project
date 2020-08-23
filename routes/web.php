@@ -1,6 +1,7 @@
 <?php
 
 use App\Receipe;
+use App\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,4 +23,9 @@ use Illuminate\Support\Facades\Route;
 Route::resource('receipe', 'ReceipeController');
 Route::get('home', 'HomeController@index');
 
+Route::get('/', 'PublicController@index');
+Route::get('detail/{id}', 'PublicController@show');
+
 Auth::routes();
+
+Route::resource('category', 'CategoryController');

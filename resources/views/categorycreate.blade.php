@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container mt-5">
-	<h2>Add New Receipe</h2>
+	<h2>Add New Category</h2>
 
 	<!-- Validation errors showing -->
 	@if ($errors->any())
@@ -20,29 +20,20 @@
 	</div>
 	@endif
 
-	<form method="POST" action="/receipe">
+	<form method="POST" action="/category">
 		{{csrf_field()}}
 		<div class="form-group">
-			<label for="receipeName">Receipe Name</label>
+			<label for="categoryName">Category Name</label>
 			<input type="text" name="name" class="form-control" value="{{old('name')}}" required="">
 		</div>
 
 		<div class="form-group">
-			<label for="ingredients">Ingredients</label>
-			<input type="text" name="ingredients" class="form-control" value="{{old('ingredients')}}" required="">
-		</div>
-
-		<div class="form-group">
-			<select class="form-control" name="category">
-				@foreach($category as $value)
-					<option value="{{$value->id}}">{{$value->name}}</option>
-				@endforeach
-			</select>
+			<label for="description">Description</label>
+			<input type="text" name="description" class="form-control" value="{{old('description')}}" required="">
 		</div>
 
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 </div>
-	
 
 @endsection

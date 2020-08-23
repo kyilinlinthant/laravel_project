@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Events\ReceipeCreatedEvent;
 use App\Mail\ReceipeStored;
+use App\Notifications\ReceipeStoredNotification;
 use App\Receipe;
+use App\User;
 use App\test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -25,11 +28,14 @@ class ReceipeController extends Controller
       
     public function index()
     {
-
-        // service container testing
-        // dd(app('test'));
+        //Notification
+        // $user=User::find(6);
+        // $user->notify(new ReceipeStoredNotification());
+        // echo "sent notification";
+        // exit();
 
         $data = Receipe::where('author_id', auth()->id())->get();
+        $data=Receipe::paginate(10);        
 
         return view('home',compact('data'));
     }
@@ -62,12 +68,10 @@ class ReceipeController extends Controller
 
         $receipe = Receipe::create($validatedData + ['author_id' => auth()->id()]);
 
-        // flash message
-        
+        //flash message and mailing service by event
+        // event(new ReceipeCreatedEvent($receipe));
 
-        return redirect("receipe");
-
-        /*return redirect("receipe")->with("message", 'Receipe has created successfully!');*/
+        return redirect("receipe")->with("message", 'Receipe has created successfully!');
     }
 
     /**

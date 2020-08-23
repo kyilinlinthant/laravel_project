@@ -2,12 +2,17 @@
 
 namespace App;
 use App\Category;
+use App\Events\ReceipeCreatedEvent;
 use App\Mail\ReceipeStored;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipe extends Model
 {
     protected $fillable = ['name', 'ingredients', 'category', 'author_id'];
+
+    public $dispatchesEvents = [
+        'created' => ReceipeCreatedEvent::class,
+    ];
 
     protected static function boot(){
 
@@ -16,7 +21,7 @@ class Receipe extends Model
     	static::created(function($receipe){
     		session()->flash("message",'Receipe has created successfully!');
 
-        	\Mail::to('moepyarpyar28@gmail.com')->send(new ReceipeStored($receipe));
+        	
     	});
     }
 
