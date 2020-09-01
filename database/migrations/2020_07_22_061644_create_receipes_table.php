@@ -18,6 +18,7 @@ class CreateReceipesTable extends Migration
             $table->text('name');
             $table->text('ingredients');
             $table->text('category');
+            $table->text('image');
             $table->timestamps();
         });
     }

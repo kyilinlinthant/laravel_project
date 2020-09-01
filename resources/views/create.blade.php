@@ -20,7 +20,7 @@
 	</div>
 	@endif
 
-	<form method="POST" action="/receipe">
+	<form method="POST" action="/receipe" enctype="multipart/form-data">
 		{{csrf_field()}}
 		<div class="form-group">
 			<label for="receipeName">Receipe Name</label>
@@ -33,11 +33,17 @@
 		</div>
 
 		<div class="form-group">
+			<label for="category">Category</label>
 			<select class="form-control" name="category">
 				@foreach($category as $value)
 					<option value="{{$value->id}}">{{$value->name}}</option>
 				@endforeach
 			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="rimage">Receipe Image</label><br>
+			<input type="file" name="rimage" required="">
 		</div>
 
 		<button type="submit" class="btn btn-primary">Submit</button>

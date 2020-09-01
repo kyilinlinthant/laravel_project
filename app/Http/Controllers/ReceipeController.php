@@ -11,6 +11,7 @@ use App\User;
 use App\test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ReceipeStoreRequest;
 
 class ReceipeController extends Controller
 {
@@ -57,16 +58,22 @@ class ReceipeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(ReceipeStoreRequest $request)
     {
+        $validatedData = $request->validated();
         // dd(request()->all());
-        $validatedData = request()->validate([
-            'name' => 'required',
-            'ingredients' => 'required',
-            'category' => 'required',
-        ]);
+        // $validatedData = request()->validate([
+        //     'name' => 'required',
+        //     'ingredients' => 'required',
+        //     'category' => 'required',
+        //     'rimage' => 'required|image',
+        // ]);
 
-        $receipe = Receipe::create($validatedData + ['author_id' => auth()->id()]);
+        // upload image
+        $imageName = date('YmdHis') . "." . request()->rimage->getClientOriginalExtension();
+        request()->rimage->move(public_path('images'), $imageName);
+
+        $receipe = Receipe::create($validatedData + ['author_id' => auth()->id(), 'image'=>$imageName]);
 
         //flash message and mailing service by event
         // event(new ReceipeCreatedEvent($receipe));
@@ -122,9 +129,18 @@ class ReceipeController extends Controller
             'name' => 'required',
             'ingredients' => 'required',
             'category' => 'required',
+            'rimage' => 'image',
         ]);
 
         $receipe->update($validatedData);
+
+        if(request()->rimage){
+            // upload image
+            $imageName = date('YmdHis') . "." . request()->rimage->getClientOriginalExtension();
+            request()->rimage->move(public_path('images'), $imageName);
+        }
+
+        $receipe->update($validatedData + ['image'=>empty($imageName) ? null : $imageName]);
 
         return redirect("receipe")->with("message", 'Receipe has updated successfully!');
     }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receipe extends Model
 {
-    protected $fillable = ['name', 'ingredients', 'category', 'author_id'];
+    protected $fillable = ['name', 'ingredients', 'category', 'author_id', 'image'];
 
     public $dispatchesEvents = [
         'created' => ReceipeCreatedEvent::class,
